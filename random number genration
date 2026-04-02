@@ -1,0 +1,20 @@
+library(lamW)
+rUEZL <- function(n, alpha, theta) {
+  
+
+  if (alpha <= 0 || theta <= 0) {
+    stop("alpha and theta must be positive.")
+  }
+  u <- runif(n)
+  A <- -2 * (1 + theta) * (1 - (1 - u)^(1 / alpha)) * exp(-2 * (1 + theta))
+  W_val <- lamW::lambertWm1(A)
+  x <- exp(
+    (2 * (1 + theta)) / theta +
+      (1 / theta) * W_val
+  )
+  # Numerical safeguard (0 < x < 1)
+  x[x <= 0] <- 1e-10
+  x[x >= 1] <- 1 - 1e-10
+  
+  return(x)
+}
